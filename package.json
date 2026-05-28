@@ -1,0 +1,82 @@
+{
+  "name": "disable_window_focus",
+  "version": "1.0.0",
+  "description": "禁用窗口焦点，可以根据窗口标题关键字自动禁用窗口焦点",
+  "main": "src/main/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run dev:renderer\" \"npm run dev:main\"",
+    "dev:renderer": "vite",
+    "dev:main": "wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .",
+    "build": "npm run build:renderer && npm run build:main",
+    "build:renderer": "vite build",
+    "build:main": "echo 'Main process ready'",
+    "start": "cross-env NODE_ENV=production electron .",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder",
+    "dist:win": "npm run build && electron-builder --win",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
+  },
+  "keywords": [
+    "window",
+    "focus",
+    "disable",
+    "electron"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.2.1",
+    "concurrently": "^8.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^28.0.0",
+    "electron-builder": "^24.9.1",
+    "vite": "^5.0.10",
+    "wait-on": "^7.2.0"
+  },
+  "dependencies": {
+    "antd": "^5.12.2",
+    "electron-store": "^8.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "build": {
+    "appId": "com.disablewindowfocus.app",
+    "productName": "窗口焦点管理器",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "src/main/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ],
+      "icon": "public/icon.ico"
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ],
+      "icon": "public/icon.icns"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ],
+      "icon": "public/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    }
+  }
+}
